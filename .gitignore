@@ -1,0 +1,8 @@
+/vendor/
+.env
+logs
+*.swo
+*.swp
+*.cache
+build
+composer.lock
