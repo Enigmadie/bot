@@ -29,13 +29,12 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
     $get_params = http_build_query($request_params);
     file_get_contents('https://api.vk.com/method/messages.send?'. $get_params);
   };
-
-  print_r($data);
   switch ($data->type) {
     case 'confirmation':
       echo $CONF_TOKEN;
       break;
     case 'message_new':
+      echo $data;
       $message_text = $data->object->message->text;
       $chat_id = $data->object->message->peer_id;
       if ($message_text == "привет"){
