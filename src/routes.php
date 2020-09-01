@@ -14,19 +14,7 @@ $app->get('/', function(ServerRequest $req, Response $res) {
 $app->post('/bot', function(ServerRequest $req, Response $res) {
   $data = json_decode(file_get_contents('php://input'));
   include '.env.php';
-  function vk_msg_send($peer_id, $text) {
-    include '.env.php';
-    $request_params = [
-      'message' => $text,
-      'peer_id' => $peer_id,
-      'random_id' => $peer_id,
-      'access_token' => $TOKEN,
-      'v' => '5.122'
-    ];
 
-    $get_params = http_build_query($request_params);
-    file_get_contents('https://api.vk.com/method/messages.send?'. $get_params);
-  };
   switch ($data->type) {
     case 'confirmation':
       echo $CONF_TOKEN;
@@ -44,6 +32,20 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
       break;
   }
 
+  function vk_msg_send($peer_id, $text) {
+    include '.env.php';
+    $request_params = array(
+      'message' => $text,
+      'peer_id' => $peer_id,
+      'user_id' => $peer_id,
+      'random_id' => $peer_id,
+      'access_token' => $TOKEN,
+      'v' => '5.122'
+    );
+
+    $get_params = http_build_query($request_params);
+    file_get_contents('https://api.vk.com/method/messages.send?'. $get_params);
+  };
 
 
   return $res;
