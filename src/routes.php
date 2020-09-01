@@ -20,8 +20,6 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
     $request_params = array(
       'message' => $text,
       'peer_id' => $peer_id,
-      'user_id' => $peer_id,
-      'random_id' => $peer_id,
       'access_token' => $TOKEN,
       'v' => '5.122'
     );
@@ -29,6 +27,7 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
     $get_params = http_build_query($request_params);
     file_get_contents('https://api.vk.com/method/messages.send?'. $get_params);
   };
+
   switch ($data->type) {
     case 'confirmation':
       echo $CONF_TOKEN;
