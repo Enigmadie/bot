@@ -6,6 +6,8 @@ use Slim\Http\Response;
 
 $app->get('/', function(ServerRequest $req, Response $res) {
   $res->write('Hello');
+  include '.env.php';
+  echo $CONF_TOKEN;
   return $res;
 });
 
@@ -42,5 +44,5 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
     file_get_contents('https://api.vk.com/method/messages.send?'. $get_params);
   }
 
-  return;
+  return $res;
 });
