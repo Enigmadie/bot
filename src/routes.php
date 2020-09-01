@@ -21,7 +21,7 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
       'message' => $text,
       'peer_id' => $peer_id,
       'access_token' => $TOKEN,
-      'v' => '5.87'
+      'v' => '5.68'
     );
 
     $get_params = http_build_query($request_params);
