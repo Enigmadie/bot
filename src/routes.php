@@ -21,7 +21,8 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
       'message' => $text,
       'peer_id' => $peer_id,
       'access_token' => $TOKEN,
-      'v' => '5.68'
+      'v' => '5.103',
+      'random_id' => '0',
     );
 
     $get_params = http_build_query($request_params);
@@ -34,7 +35,7 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
       break;
     case 'message_new':
       $message_text = $data->object->message->text;
-      $chat_id = $data->object->message->peer_id;
+      $chat_id = $data->object->message->from_id;
       if ($message_text == "privet"){
         vk_msg_send($chat_id, "Привет, я бот, который говорит две фразы.");
       }
