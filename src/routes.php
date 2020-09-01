@@ -30,6 +30,7 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
     file_get_contents('https://api.vk.com/method/messages.send?'. $get_params);
   };
 
+  print_r($data);
   switch ($data->type) {
     case 'confirmation':
       echo $CONF_TOKEN;
