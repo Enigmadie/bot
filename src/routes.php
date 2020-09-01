@@ -44,4 +44,5 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
       echo 'ok';
       break;
   }
+  return $res;
 });
