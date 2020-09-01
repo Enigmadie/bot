@@ -35,8 +35,8 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
       echo $CONF_TOKEN;
       break;
     case 'message_new':
-      $message_text = $data->object->text;
-      $chat_id = $data->object->peer_id;
+      $message_text = $data->object->message->text;
+      $chat_id = $data->object->message->peer_id;
       if ($message_text == "привет"){
         vk_msg_send($chat_id, "Привет, я бот, который говорит две фразы.");
       }
