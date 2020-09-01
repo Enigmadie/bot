@@ -1,0 +1,15 @@
+{
+    "name": "hermes/php-back",
+    "type": "project",
+    "license": "MiT",
+    "require": {
+        "slim/slim": "^4.5",
+        "slim/http": "^1.0",
+        "slim/psr7": "^1.2"
+    },
+    "autoload": {
+      "psr-4": {
+        "src\\": "src/"
+      }
+    }
+}

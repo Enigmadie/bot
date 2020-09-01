@@ -1,1 +1,1 @@
-bot: php index.php
+bot: php -S localhost:5000
