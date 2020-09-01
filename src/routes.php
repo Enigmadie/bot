@@ -3,7 +3,6 @@
 use Slim\Http\ServerRequest;
 use Slim\Http\Response;
 
-include '.env.php';
 
 $app->get('/', function(ServerRequest $req, Response $res) {
   $res->write('Hello');
@@ -12,6 +11,7 @@ $app->get('/', function(ServerRequest $req, Response $res) {
 
 $app->post('/bot', function(ServerRequest $req, Response $res) {
   $data = json_decode(file_get_contents('php://input'));
+  include '.env.php';
   switch ($data->type) {
     case 'confirmation':
       echo $CONF_TOKEN;
@@ -30,6 +30,7 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
   }
 
   function vk_msg_send($peer_id,$text) {
+    include '.env.php';
     $request_params = [
       'message' => $text,
       'peer_id' => $peer_id,
