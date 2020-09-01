@@ -41,7 +41,7 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
       if ($message_text == "пока"){
         vk_msg_send($chat_id, "Пока. Если захочешь с кем-то поговорить, то у тебя есть бот, который говорит две фразы.");
       }
+      echo 'ok';
       break;
   }
-  return $res;
 });
