@@ -23,6 +23,7 @@ function vk_api_call($method, $params = array()) {
   $curl = curl_init($url);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
   $json = curl_exec($curl);
+  echo $url;
   $error = curl_error($curl);
   if ($error) {
     throw new Exception("Failed {$method} request");
@@ -32,5 +33,4 @@ function vk_api_call($method, $params = array()) {
   if (!$response || !isset($response['response'])) {
     throw new Exception("Invalid response for {$method} request");
   }
-  return;
 }
