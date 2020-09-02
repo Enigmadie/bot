@@ -12,7 +12,7 @@ $app->get('/', function(ServerRequest $req, Response $res) {
 });
 
 $app->post('/bot', function(ServerRequest $req, Response $res) {
-  $data = json_decode(file_get_contents('php://input'), true);
+  $data = json_decode(file_get_contents('php://input'));
   include '.env.php';
 
   function vk_msg_send($peer_id, $text) {
@@ -43,7 +43,7 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
       if ($message_text == "пока"){
         vk_msg_send($chat_id, "Пока. Если захочешь с кем-то поговорить, то у тебя есть бот, который говорит две фразы.");
       }
-      /* echo 'ok'; */
+      echo 'ok';
       break;
   }
   return $res;
