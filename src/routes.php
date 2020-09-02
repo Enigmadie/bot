@@ -4,7 +4,9 @@ use Slim\Http\ServerRequest;
 use Slim\Http\Response;
 
 require_once './src/api/index.php';
-
+$app->get('/', function(Response $res) {
+  return $res->write('Hi');
+});
 $app->post('/bot', function(ServerRequest $req, Response $res) {
   $data = json_decode(file_get_contents('php://input'));
   include '.env.php';
@@ -24,5 +26,5 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
       echo 'ok';
       break;
   }
-  /* return $res; */
+  return $res;
 });
