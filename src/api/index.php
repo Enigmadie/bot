@@ -18,7 +18,7 @@ function vk_api_call($method, $params = array()) {
   $params['access_token'] = VK_API_TOKEN;
   $params['v'] = VK_API_VERSION;
   $query = http_build_query($params);
-  $url = VK_API_ENDPOINT . '?' . $query;
+  $url = VK_API_ENDPOINT . $method . '?' . $query;
 
   $curl = curl_init($url);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
