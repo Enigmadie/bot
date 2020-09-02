@@ -23,7 +23,7 @@ function vk_api_call($method, $params = array()) {
   if (!$response || !isset($response['response'])) {
     throw new Exception("Invalid response for {$method} request");
   }
-  return $response;
+  return $response['response'];
 }
 
 function vk_api_msgSend($peer_id, $text) {
