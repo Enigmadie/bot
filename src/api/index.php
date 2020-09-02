@@ -4,7 +4,7 @@ include '.env.php';
 
 define('VK_API_TOKEN', $TOKEN);
 define('VK_API_VERSION', '5.103');
-define('VK_API_ENDPOINT', 'https://api.vl.com/method/');
+define('VK_API_ENDPOINT', 'https://api.vk.com/method/');
 
 function vk_api_msgSend($peer_id, $text) {
   return vk_api_call('message.send', array(
