@@ -28,7 +28,7 @@ function vk_api_call($method, $params = array()) {
 }
 
 function vk_api_msgSend($peer_id, $text) {
-  return vk_api_call('message.send', array(
+  return vk_api_call('messages.send', array(
     'message' => $text,
     'peer_id' => $peer_id,
     'random_id' => rand(1000, 99999),
