@@ -4,7 +4,7 @@ use Slim\Http\ServerRequest;
 use Slim\Http\Response;
 
 require_once './src/api/index.php';
-$app->get('/', function(Response $res) {
+$app->get('/', function(ServerRequest $req, Response $res) {
   return $res->write('Hi');
 });
 $app->post('/bot', function(ServerRequest $req, Response $res) {
