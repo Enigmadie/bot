@@ -6,14 +6,6 @@ define('VK_API_TOKEN', $TOKEN);
 define('VK_API_VERSION', '5.103');
 define('VK_API_ENDPOINT', 'https://api.vk.com/method/');
 
-function vk_api_msgSend($peer_id, $text) {
-  return vk_api_call('message.send', array(
-    'message' => $text,
-    'peer_id' => $peer_id,
-    'random_id' => rand(1000, 99999),
-  ));
-}
-
 function vk_api_call($method, $params = array()) {
   $params['access_token'] = VK_API_TOKEN;
   $params['v'] = VK_API_VERSION;
@@ -33,4 +25,12 @@ function vk_api_call($method, $params = array()) {
   if (!$response || !isset($response['response'])) {
     throw new Exception("Invalid response for {$method} request");
   }
+}
+
+function vk_api_msgSend($peer_id, $text) {
+  return vk_api_call('message.send', array(
+    'message' => $text,
+    'peer_id' => $peer_id,
+    'random_id' => rand(1000, 99999),
+  ));
 }
