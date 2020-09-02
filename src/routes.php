@@ -2,6 +2,7 @@
 
 use Slim\Http\ServerRequest;
 use Slim\Http\Response;
+
 require_once './src/api/index.php';
 
 $app->post('/bot', function(ServerRequest $req, Response $res) {
@@ -23,5 +24,5 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
       echo 'ok';
       break;
   }
-  return $res;
+  /* return $res; */
 });
