@@ -27,6 +27,7 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
 
     $get_params = http_build_query($request_params);
     file_get_contents('https://api.vk.com/method/messages.send?'. $get_params);
+    echo 'https://api.vk.com/method/messages.send?'. $get_params;
   };
 
   switch ($data->type) {
@@ -42,7 +43,8 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
       if ($message_text == "пока"){
         vk_msg_send($chat_id, "Пока. Если захочешь с кем-то поговорить, то у тебя есть бот, который говорит две фразы.");
       }
-      echo 'ok';
+      /* echo 'ok'; */
       break;
   }
+  return $res;
 });
