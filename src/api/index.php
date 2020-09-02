@@ -33,7 +33,6 @@ function vk_api_call($method, $params = array()) {
 
   $response = json_decode($json, true);
   if (!$response || !isset($response['response'])) {
-    log_error($json);
     throw new Exception("Invalid response for {$method} request");
   }
   return;

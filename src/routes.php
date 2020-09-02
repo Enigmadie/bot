@@ -3,7 +3,6 @@
 use Slim\Http\ServerRequest;
 use Slim\Http\Response;
 require_once './src/api/index.php';
-require_once './src/log.php';
 
 $app->post('/bot', function(ServerRequest $req, Response $res) {
   $data = json_decode(file_get_contents('php://input'));
