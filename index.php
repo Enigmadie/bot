@@ -10,7 +10,7 @@ if (file_exists($autoloadPath1)) {
 }
 
 $app = Slim\Factory\AppFactory::create();
-
+$app->addErrorMiddleware(true, true, true);
 require_once './src/routes.php';
 
 $app->run();
