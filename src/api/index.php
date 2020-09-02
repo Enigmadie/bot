@@ -1,0 +1,40 @@
+<?php
+
+include '.env.php';
+
+define('VK_API_TOKEN', $TOKEN);
+define('VK_API_VERSION', '5.103');
+define('VK_API_ENDPOINT', 'https://api.vl.com/method/');
+
+function vk_api_msgSend($peer_id, $text) {
+  return vk_api_call('message.send', array(
+    'message' => $text,
+    'peer_id' => $peer_id,
+    'random_id' => rand(1000, 99999),
+  ));
+}
+
+function vk_api_call($method, $params = array()) {
+  $params['access_token'] = VK_API_TOKEN;
+  $params['v'] = VK_API_VERSION;
+  $query = http_build_query($params);
+  $url = VK_API_ENDPOINT . '?' . $query;
+
+  $curl = curl_init($url);
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+  $json = curl_exec($curl);
+  $error = curl_error($curl);
+  if ($error) {
+    log_error($error);
+    throw new Exception("Failed {$method} request");
+  }
+
+  curl_close($curl);
+
+  $response = json_decode($json, true);
+  if (!$response || !isset($response['response'])) {
+    log_error($json);
+    throw new Exception("Invalid response for {$method} request");
+  }
+  return;
+}
