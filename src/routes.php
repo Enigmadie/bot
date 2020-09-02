@@ -12,7 +12,7 @@ $app->get('/', function(ServerRequest $req, Response $res) {
 });
 
 $app->post('/bot', function(ServerRequest $req, Response $res) {
-  $data = json_decode(file_get_contents('php://input'));
+  $data = json_decode(file_get_contents('php://input'), true);
   include '.env.php';
 
   function vk_msg_send($peer_id, $text) {
@@ -22,7 +22,7 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
       'peer_id' => $peer_id,
       'access_token' => $TOKEN,
       'v' => '5.103',
-      'random_id' => '0',
+      'random_id' => rand(1000, 99999),
     );
 
     $get_params = http_build_query($request_params);
@@ -45,5 +45,5 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
       echo 'ok';
       break;
   }
-  return $res;
+  return 'ok';
 });
