@@ -4,9 +4,12 @@ use Slim\Http\ServerRequest;
 use Slim\Http\Response;
 
 require_once './src/api/index.php';
+require_once './src/services/wether.php';
+
 $app->get('/', function(ServerRequest $req, Response $res) {
   return $res->write('Hi');
 });
+
 $app->post('/bot', function(ServerRequest $req, Response $res) {
   $data = json_decode(file_get_contents('php://input'));
   include '.env.php';
@@ -22,6 +25,10 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
       }
       if ($message_text == "пока"){
         vk_api_msgSend($chat_id, "Пока. Если захочешь с кем-то поговорить, то у тебя есть бот, который говорит две фразы.");
+      }
+      if (preg_match('/погода\s/', $message_text)) {
+        $region = strstr($message_text, ' ');
+        get_weather($region);
       }
       echo 'ok';
       break;
