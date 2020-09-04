@@ -18,6 +18,7 @@ function get_weather($region) {
 
 function get_forecasts($region) {
   $key = get_locationKey($region);
+  echo $key;
   if (!isset($key)) {
     return null;
   }
