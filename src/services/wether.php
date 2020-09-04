@@ -64,6 +64,6 @@ function get_locationKey($region) {
   if (!$response) {
     throw new Exception("Invalid response for {$region} request");
   }
-  echo $response;
+  print_r($response);
   return $response[0]['key'];
 }
