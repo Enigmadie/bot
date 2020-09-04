@@ -41,7 +41,7 @@ function get_forecasts($region) {
   }
   curl_close($curl);
   $response = json_decode($json, true);
-  if (!$response || !array_key_exists(0, $response)) {
+  if (!$response) {
     throw new Exception("Invalid response for {$region} request");
   }
   $filtered_date = array_filter($response[0], fn($key) => $key % 3 === 0, ARRAY_FILTER_USE_KEY);
@@ -67,7 +67,7 @@ function get_locationKey($region) {
   }
   curl_close($curl);
   $response = json_decode($json, true);
-  if (!$response || !array_key_exists(0, $response)) {
+  if (!$response) {
     throw new Exception("Invalid response for {$region} request");
   }
   return $response[0]['key'] ?? null;
