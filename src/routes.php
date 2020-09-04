@@ -28,7 +28,8 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
       }
       if (preg_match('/погода\s/', $message_text)) {
         $region = strstr($message_text, ' ');
-        $weather = get_weather($region);
+        $city = substr($region, 1);
+        $weather = get_weather($city);
         vk_api_msgSend($chat_id, json_encode($weather));
       }
       echo 'ok';
