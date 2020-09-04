@@ -10,18 +10,17 @@ function register_weather_reciept($params) {
 
 function get_weather($region) {
   $data = get_forecasts($region);
-  if (!isset($data)) {
-    return 'Не найден';
-  }
+  /* if (!isset($data)) { */
+  /*   return 'Не найден'; */
+  /* } */
   return json_encode($data);
 };
 
 function get_forecasts($region) {
   $key = get_locationKey($region);
-  echo json_encode($key);
-  if (!isset($key)) {
-    return null;
-  }
+  /* if (!isset($key)) { */
+  /*   return null; */
+  /* } */
   $params = array(
     'apikey' => WEATHER_API_TOKEN,
     'language' => 'ru-ru',
