@@ -9,6 +9,10 @@ function register_weather_reciept($params) {
 }
 
 function get_weather($region) {
+  $data = get_forecasts($region);
+};
+
+function get_forecasts($region) {
   $params = array(
     'apiKey' => WEATHER_API_TOKEN,
     'language' => 'ru-ru',

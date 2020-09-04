@@ -11,7 +11,6 @@ function vk_api_call($method, $params = array()) {
   $params['v'] = VK_API_VERSION;
   $query = http_build_query($params);
   $url = VK_API_ENDPOINT . $method . '?' . $query;
-  /* file_get_contents($url); */
   $curl = curl_init($url);
   curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
   $json = curl_exec($curl);
