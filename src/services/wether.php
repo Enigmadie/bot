@@ -15,7 +15,7 @@ function get_weather($region) {
 
 function get_forecasts($region) {
   $params = array(
-    'apiKey' => WEATHER_API_TOKEN,
+    'apikey' => WEATHER_API_TOKEN,
     'language' => 'ru-ru',
     'details' => true,
     'metric' => true,
@@ -44,7 +44,7 @@ function get_forecasts($region) {
 
 function get_locationKey($region) {
   $params = array(
-    'apiKey' => WEATHER_API_TOKEN,
+    'apikey' => WEATHER_API_TOKEN,
     'q' => $region,
     'language' => 'ru-ru',
   );
