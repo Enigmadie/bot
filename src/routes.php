@@ -32,8 +32,10 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
         $weather = get_weather($city);
         vk_api_msgSend($chat_id, $weather);
       }
-      echo 'ok';
+      echo('ok');
       break;
+    default:
+      echo('ok');
   }
   return $res;
 });
