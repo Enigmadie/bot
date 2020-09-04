@@ -70,5 +70,5 @@ function get_locationKey($region) {
   if (!$response || !array_key_exists(0, $response)) {
     throw new Exception("Invalid response for {$region} request");
   }
-  return $response[0] ? $response[0]['key'] : null;
+  return $response[0]['key'] ?? null;
 }
