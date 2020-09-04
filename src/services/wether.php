@@ -10,7 +10,7 @@ function register_weather_reciept($params) {
 
 function get_weather($region) {
   $data = get_forecasts($region);
-  if (!isset($data)) {
+  if (isset($data)) {
     return 'Не найден';
   }
   return json_encode($data);
@@ -18,7 +18,7 @@ function get_weather($region) {
 
 function get_forecasts($region) {
   $key = get_locationKey($region);
-  if (!isset($key)) {
+  if (isset($key)) {
     return null;
   }
   $params = array(
