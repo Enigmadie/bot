@@ -10,10 +10,17 @@ function register_weather_reciept($params) {
 
 function get_weather($region) {
   $data = get_forecasts($region);
-  return $data;
+  if (!isset($data)) {
+    return 'Не найден';
+  }
+  return json_encode($data);
 };
 
 function get_forecasts($region) {
+  $key = get_locationKey($region);
+  if (!isset($key)) {
+    return null;
+  }
   $params = array(
     'apikey' => WEATHER_API_TOKEN,
     'language' => 'ru-ru',
@@ -22,7 +29,6 @@ function get_forecasts($region) {
   );
   $query = http_build_query($params);
 
-  $key = get_locationKey($region);
   $path = WEATHER_API_HOST . "forecasts/v1/hourly/12hour/{$key}";
   $url = $path . '?' . $query;
 
@@ -35,10 +41,10 @@ function get_forecasts($region) {
   }
   curl_close($curl);
   $response = json_decode($json, true);
-  $filtered_date = array_filter($response[0], fn($key) => $key % 3 === 0, ARRAY_FILTER_USE_KEY);
-  if (!$response || !$response[0]) {
+  if (!$response || !array_key_exists(0, $response)) {
     throw new Exception("Invalid response for {$region} request");
   }
+  $filtered_date = array_filter($response[0], fn($key) => $key % 3 === 0, ARRAY_FILTER_USE_KEY);
   return $filtered_date;
 }
 
@@ -61,8 +67,8 @@ function get_locationKey($region) {
   }
   curl_close($curl);
   $response = json_decode($json, true);
-  if (!$response || !$response[0]) {
+  if (!$response || !array_key_exists(0, $response)) {
     throw new Exception("Invalid response for {$region} request");
   }
-  return $response[0]['key'];
+  return $response[0] ? $response[0]['key'] : null;
 }

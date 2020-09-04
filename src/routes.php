@@ -30,7 +30,7 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
         $region = strstr($message_text, ' ');
         $city = substr($region, 1);
         $weather = get_weather($city);
-        vk_api_msgSend($chat_id, json_encode($weather));
+        vk_api_msgSend($chat_id, $weather);
       }
       echo 'ok';
       break;
