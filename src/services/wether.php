@@ -50,6 +50,8 @@ function get_locationKey($region) {
   );
   $query = http_build_query($params);
 
+  echo $query;
+
   $path = WEATHER_API_HOST . 'locations/v1/cities/search';
   $url = $path . '?' . $query;
 
@@ -62,6 +64,7 @@ function get_locationKey($region) {
   }
   curl_close($curl);
   $response = json_decode($json, true);
+  echo $response;
   if (!$response) {
     throw new Exception("Invalid response for {$region} request");
   }
