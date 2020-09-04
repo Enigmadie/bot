@@ -18,7 +18,7 @@ function get_weather($region) {
 
 function get_forecasts($region) {
   $key = get_locationKey($region);
-  echo $key;
+  echo json_encode($key);
   if (!isset($key)) {
     return null;
   }
@@ -45,9 +45,7 @@ function get_forecasts($region) {
   if (!$response) {
     throw new Exception("Invalid response for {$region} request");
   }
-  echo(json_encode($response));
   $filtered_date = array_filter($response[0], fn($key) => $key % 3 === 0, ARRAY_FILTER_USE_KEY);
-  echo(json_encode($filtered_date));
   return $filtered_date;
 }
 
@@ -73,5 +71,5 @@ function get_locationKey($region) {
   if (!$response) {
     throw new Exception("Invalid response for {$region} request");
   }
-  return $response[0]['key'] ?? null;
+  return $response[0]['key'];
 }
