@@ -44,9 +44,9 @@ function get_forecasts($region) {
   if (!$response) {
     throw new Exception("Invalid response for {$region} request");
   }
-  echo $response;
+  print_r($response);
   $filtered_date = array_filter($response[0], fn($key) => $key % 3 === 0, ARRAY_FILTER_USE_KEY);
-  echo $filtered_date;
+  print_r($filtered_date);
   return $filtered_date;
 }
 
