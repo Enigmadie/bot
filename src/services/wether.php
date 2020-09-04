@@ -13,11 +13,13 @@ function get_weather($region) {
   /* if (!isset($data)) { */
   /*   return 'Не найден'; */
   /* } */
-  return json_encode($data);
+  /* return json_encode($data); */
+  return $data;
 };
 
 function get_forecasts($region) {
   $key = get_locationKey($region);
+  return $key;
   /* if (!isset($key)) { */
   /*   return null; */
   /* } */
@@ -45,7 +47,7 @@ function get_forecasts($region) {
     throw new Exception("Invalid response for {$region} request");
   }
   $filtered_date = array_filter($response[0], fn($key) => $key % 3 === 0, ARRAY_FILTER_USE_KEY);
-  return $filtered_date;
+  /* return $filtered_date; */
 }
 
 function get_locationKey($region) {
