@@ -24,10 +24,10 @@ function get_weather($region) {
     $date = date_create($time);
     $formated_date = date_format($date, 'H:m');
 
-   return "{$formated_date} {$weather} {$temperature['Value']}°C {$wind['Speed']['Value']}км/ч";
+   return "{$formated_date} {$weather} {$temperature['Value']}°C Ветер: {$wind['Speed']['Value']}км/ч";
   }, $data);
 
-  $msgString = implode("\n", $msg);
+  $msgString = implode("\n\n", $msg);
   return $msgString;
 };
 
