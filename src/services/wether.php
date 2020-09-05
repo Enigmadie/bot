@@ -22,12 +22,12 @@ function get_weather($region) {
     ] = $el;
 
     $date = date_create($time);
-    $formated_date = date_format($date, 'h:m');
+    $formated_date = date_format($date, 'H:m');
 
-   return "{$formated_date} {$weather} {$temperature['Value']}°C {$wind['Speed']['Value']}км/ч";
+   return "{$formated_date} {$weather} {$temperature->Value}°C {$wind->Speed->Value}км/ч";
   }, $data);
 
-  $msgString = implode('\n', $msg);
+  $msgString = implode("\n", $msg);
   return $msgString;
 };
 
@@ -40,8 +40,8 @@ function get_forecasts($region) {
   $params = array(
     'apikey' => WEATHER_API_TOKEN,
     'language' => 'ru-ru',
-    'details' => true,
-    'metric' => true,
+    'details' => 'true',
+    'metric' => 'true',
   );
   $query = http_build_query($params);
 
