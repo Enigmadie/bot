@@ -3,40 +3,27 @@
 use Slim\Http\ServerRequest;
 use Slim\Http\Response;
 
-require_once './src/api/index.php';
-require_once './src/services/wether.php';
-
-$app->get('/', function(ServerRequest $req, Response $res) {
-  return $res->write('Hi');
-});
+require_once './src/selectors/message_selector.php';
 
 $app->post('/bot', function(ServerRequest $req, Response $res) {
-  $data = json_decode(file_get_contents('php://input'));
   include '.env.php';
+  $data = json_decode(file_get_contents('php://input'));
+  ['type' => $type, 'object' => $object] = $data;
   try {
-    switch ($data->type) {
+    switch ($type) {
       case 'confirmation':
-        echo $CONF_TOKEN;
+        echo($CONF_TOKEN);
         break;
       case 'message_new':
-        $message_text = $data->object->message->text;
-        $chat_id = $data->object->message->from_id;
-        if ($message_text == "привет"){
-          vk_api_msgSend($chat_id, "Привет, я бот, который говорит две фразы.");
-        }
-        if ($message_text == "пока"){
-          vk_api_msgSend($chat_id, "Пока. Если захочешь с кем-то поговорить, то у тебя есть бот, который говорит две фразы.");
-        }
-        if (preg_match('/погода\s/', $message_text)) {
-          $region = strstr($message_text, ' ');
-          $city = substr($region, 1);
-          $weather = get_weather($city);
-          vk_api_msgSend($chat_id, $weather);
-        }
+        $message_text = $object['message']['text'];
+        $chat_id = $object['message']['from_id'];
+        $formated_msg = lcfirst($message_text);
+        msg_selector($formated_msg, $chat_id);
         echo('ok');
         break;
       default:
         echo('ok');
+        break;
     }
   } catch(Exception $e) {
     echo('ok');
