@@ -13,8 +13,22 @@ function get_weather($region) {
   if (!isset($data)) {
     return 'Не найден';
   }
-  return json_encode($data);
-  /* return $data; */
+  $msg = array_map(function($el) {
+    [
+      'DateTime' => $time,
+      'IconPhrase' => $weather,
+      'Temperature' => $temperature,
+      'Wind' => $wind,
+    ] = $el;
+
+    $date = date_create($time);
+    $formated_date = date_format($date, 'h:m');
+
+   return "{$formated_date} {$weather} {$temperature['Value']}°C {$wind['Speed']['Value']}км/ч";
+  }, $data);
+
+  $msgString = implode('\n', $msg);
+  return $msgString;
 };
 
 function get_forecasts($region) {
