@@ -5,6 +5,11 @@ use Slim\Http\Response;
 
 require_once './src/selectors/message_selector.php';
 
+$app->get('/', function(ServerRequest $req, Response $res) {
+  $res->write('Hello');
+  return $res;
+});
+
 $app->post('/bot', function(ServerRequest $req, Response $res) {
   include '.env.php';
   $data = json_decode(file_get_contents('php://input'));
@@ -17,6 +22,7 @@ $app->post('/bot', function(ServerRequest $req, Response $res) {
         $message_text = $data->object->message->text;
         $chat_id = $data->object->message->from_id;
         $formatedMsg = lcfirst($message_text);
+
         msg_selector($formatedMsg, $chat_id);
         echo('ok');
         break;
