@@ -1,16 +1,16 @@
 <?php
 
-use Slim\Http\ServerRequest;
-use Slim\Http\Response;
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\RequestInterface as Request;
 
 require_once './src/selectors/message_selector.php';
 
-$app->get('/', function(ServerRequest $req, Response $res) {
-  $res->write('Hello');
+$app->get('/', function(Request $req, Response $res) {
+  $res->getBody()->write('Hello');
   return $res;
 });
 
-$app->post('/bot', function(ServerRequest $req, Response $res) {
+$app->post('/bot', function(Request $req, Response $res) {
   include '.env.php';
   $data = json_decode(file_get_contents('php://input'));
   try {
