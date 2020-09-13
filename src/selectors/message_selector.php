@@ -1,6 +1,5 @@
 <?php
 
-/* require_once './src/services/weather.php'; */
 namespace Bot\Selectors\Message_Selector;
 
 use function Bot\Services\Weather\get_weather;

@@ -8,17 +8,12 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use function Bot\Utils\mb_lcfirst;
 use function Bot\Selectors\Message_Selector\msg_selector;
 
-/* use Slim\Http\ServerRequest as Request; */
-/* use Slim\Http\Response as Response; */
-
-/* require_once './src/selectors/message_selector.php'; */
-
 $app->get('/', function(Request $req, Response $res) {
   $res->getBody()->write('Hello');
   return $res;
 });
 
-$app->post('/', function($req, $res) {
+$app->post('/', function(Request $req, Response $res) {
   include '.env.php';
   $data = json_decode(file_get_contents('php://input'));
   try {
