@@ -38,7 +38,7 @@ $app->post('/', function($req, $res) {
         echo('ok');
         break;
     }
-  } catch(Exception $e) {
+  } catch(\Exception $e) {
     echo('ok');
   }
   return $res;

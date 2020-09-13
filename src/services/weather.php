@@ -1,6 +1,7 @@
 <?php
 
 namespace Bot\Services\Weather;
+use function Bot\Utils\mb_ucfirst;
 
 include '.env.php';
 define('WEATHER_API_HOST', 'http://dataservice.accuweather.com/');
@@ -25,17 +26,17 @@ function get_weather($region) {
 
     $date = date_create($time);
     $formated_date = date_format($date, 'H:m');
-
    return "{$formated_date} {$weather} {$temperature['Value']}°C Ветер: {$wind['Speed']['Value']}км/ч";
   }, $data);
 
+  $city = mb_ucfirst($region);
+
   $msgString = implode("\n\n", $msg);
-  return $msgString;
+  return "Погода в городе {$city}:\n\n" . $msgString;
 };
 
 function get_forecasts($region) {
   $key = get_locationKey($region);
-  /* return $key; */
   if (!isset($key)) {
     return null;
   }
@@ -55,12 +56,12 @@ function get_forecasts($region) {
   $json = curl_exec($curl);
   $error = curl_error($curl);
   if ($error) {
-    throw new Exception("Failed {$region} request");
+    throw new \Exception("Failed {$region} request");
   }
   curl_close($curl);
   $response = json_decode($json, true);
   if (!$response) {
-    throw new Exception("Invalid response for {$region} request");
+    throw new \Exception("Invalid response for {$region} request");
   }
   $filtered_date = array_filter($response, fn($key) => $key % 3 === 0, ARRAY_FILTER_USE_KEY);
   return $filtered_date;
@@ -81,12 +82,12 @@ function get_locationKey($region) {
   $json = curl_exec($curl);
   $error = curl_error($curl);
   if ($error) {
-    throw new Exception("Failed {$region} request");
+    throw new \Exception("Failed {$region} request");
   }
   curl_close($curl);
   $response = json_decode($json, true);
   if (!$response) {
-    throw new Exception("Invalid response for {$region} request");
+    throw new \Exception("Invalid response for {$region} request");
   }
   return $response[0]['Key'] ?? null;
 }

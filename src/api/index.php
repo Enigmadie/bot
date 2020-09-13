@@ -17,12 +17,12 @@ function vk_api_call($method, $params = array()) {
   $json = curl_exec($curl);
   $error = curl_error($curl);
   if ($error) {
-    throw new Exception("Failed {$method} request");
+    throw new \Exception("Failed {$method} request");
   }
   curl_close($curl);
   $response = json_decode($json, true);
   if (!$response || !isset($response['response'])) {
-    throw new Exception("Invalid response for {$method} request");
+    throw new \Exception("Invalid response for {$method} request");
   }
   return $response['response'];
 }
