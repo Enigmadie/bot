@@ -1,8 +1,0 @@
-<?php
-$TOKEN = '84de75ec8e8b9e1761af8debd9a66bfda0eb2330d7d096fb4ad25bf4cf66d969c6c3fbce652eae98eb233';
-
-$CONF_TOKEN = '430e150f';
-
-$WEATHER_TOKEN = 'A4xI3Lt3claXaj4BMUJqL1tjGAA3TTAb';
-
-?>

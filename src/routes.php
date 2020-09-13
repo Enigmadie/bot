@@ -1,16 +1,24 @@
 <?php
 
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\RequestInterface as Request;
+namespace Bot\Routes;
 
-require_once './src/selectors/message_selector.php';
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+
+use function Bot\Utils\mb_lcfirst;
+use function Bot\Selectors\Message_Selector\msg_selector;
+
+/* use Slim\Http\ServerRequest as Request; */
+/* use Slim\Http\Response as Response; */
+
+/* require_once './src/selectors/message_selector.php'; */
 
 $app->get('/', function(Request $req, Response $res) {
   $res->getBody()->write('Hello');
   return $res;
 });
 
-$app->post('/bot', function(Request $req, Response $res) {
+$app->post('/', function($req, $res) {
   include '.env.php';
   $data = json_decode(file_get_contents('php://input'));
   try {
@@ -21,7 +29,7 @@ $app->post('/bot', function(Request $req, Response $res) {
       case 'message_new':
         $message_text = $data->object->message->text;
         $chat_id = $data->object->message->from_id;
-        $formatedMsg = lcfirst($message_text);
+        $formatedMsg = mb_lcfirst($message_text);
 
         msg_selector($formatedMsg, $chat_id);
         echo('ok');

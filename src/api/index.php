@@ -1,5 +1,6 @@
 <?php
 
+namespace Bot\Api;
 include '.env.php';
 
 define('VK_API_TOKEN', $TOKEN);

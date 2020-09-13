@@ -7,8 +7,10 @@
         "slim/psr7": "^1.2"
     },
     "autoload": {
-      "psr-4": {
-        "src\\": "src/"
-      }
+        "files": [
+            "src/utils/index.php",
+            "src/selectors/message_selector.php",
+            "src/services/weather.php"
+        ]
     }
 }
