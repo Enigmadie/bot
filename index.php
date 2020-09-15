@@ -9,9 +9,4 @@ if (file_exists($autoloadPath1)) {
     require_once $autoloadPath2;
 }
 
-$app = Slim\Factory\AppFactory::create();
-$app->addErrorMiddleware(true, true, true);
-
-require_once './src/routes.php';
-
-$app->run();
+require_once './src/index.php';
