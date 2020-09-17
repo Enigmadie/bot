@@ -4,12 +4,16 @@
     "license": "MiT",
     "require": {
     },
+    "scripts": {
+        "dump": "composer dump-autoload"
+    },
     "autoload": {
         "files": [
             "src/utils/index.php",
             "src/selectors/message_selector.php",
             "src/services/weather.php",
-            "src/api/index.php"
+            "src/api/index.php",
+            "./db_init.php"
         ]
     }
 }
