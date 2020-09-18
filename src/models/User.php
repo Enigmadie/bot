@@ -13,13 +13,24 @@ class User {
     if (empty($result)) {
       $query = "CREATE TABLE user (
         id INT(11) AUTO_INCREMENT PRIMARY KEY,
-        user_id VARCHAR(20) NOT NULL
+        user_id VARCHAR(20) NOT NULL UNIQUE
         )";
       $result = self::$connect->query($query);
     }
       if (self::$connect->error) {
         die("Model User is failed: " . self::$connect->error);
       }
+  }
+
+  public function register($id) {
+    $query = "INSERT INTO user (user_id) VALUES (${id})";
+    self::$connect->query($query);
+  }
+
+  public function hasUser($id) {
+    $query = "SELECT * FROM user WHERE user_id = {$id}";
+    $result = self::$connect->query($query);
+    return $result->num_rows > 0;
   }
 }
 

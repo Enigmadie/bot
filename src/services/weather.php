@@ -7,10 +7,6 @@ include '.env.php';
 define('WEATHER_API_HOST', 'http://dataservice.accuweather.com/');
 define('WEATHER_API_TOKEN', $WEATHER_TOKEN);
 
-/* function register_weather_reciept($params) { */
-/*   return; */
-/* } */
-
 function get_weather($region) {
   $data = get_forecasts($region);
   if (!isset($data)) {

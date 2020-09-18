@@ -12,4 +12,3 @@ if (file_exists($autoloadPath1)) {
 Bot\Db\init_db();
 
 require_once './src/index.php';
-
