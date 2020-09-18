@@ -8,6 +8,7 @@
         "dump": "composer dump-autoload"
     },
     "autoload": {
+        "psr-4": {"Bot\\": "src/models"},
         "files": [
             "src/utils/index.php",
             "src/selectors/message_selector.php",
