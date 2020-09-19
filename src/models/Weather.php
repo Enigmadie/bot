@@ -6,6 +6,8 @@ use function Bot\Services\Weather\get_forecasts;
 use function Bot\Services\Weather\get_locationKey;
 use function Bot\Utils\mb_ucfirst;
 
+use Bot\User;
+
 class Weather {
   private static $connect;
 
@@ -19,7 +21,8 @@ class Weather {
         id int(11) AUTO_INCREMENT PRIMARY KEY,
         city VARCHAR(60) NOT NULL,
         created_at DATETIME,
-        user_id INT(11),
+        updated_at DATETIME,
+        user_id INT(11) UNIQUE,
         FOREIGN KEY (user_id) REFERENCES user (id)
         )";
       $result = self::$connect->query($query);
@@ -56,21 +59,33 @@ class Weather {
   public function register_weather_reciept($location, $user_id) {
     $key = get_locationKey($location);
     if (isset($key)) {
-      $query_user = "SELECT * FROM user where user_id = {$user_id}";
-      $result_userId = self::$connect->query($query_user);
-      if ($result_userId->num_rows > 0) {
-        $id = $result_userId->fetch_assoc()['id'];
-
-        $query_select = "SELECT * FROM weather WHERE city = '{$location}' AND user_id = {$id}";
+      $user = new User();
+      $id = $user->get_user_id($user_id);
+      if (isset($id)) {
+        $query_select = "SELECT * FROM weather WHERE user_id = {$id}";
         $result_select = self::$connect->query($query_select);
-        $is_rowEmpty = $result_select->num_rows === 0;
 
-        if ($is_rowEmpty) {
-          $date = new \DateTime('Europe/Moscow');
-          $query_insert = "INSERT INTO weather (city, created_at, user_id) VALUES ('{$location}', '{$date->format('Y-m-d H:i:s')}', {$id})";
-          self::$connect->query($query_insert);
-        }
+        $is_rowEmpty = $result_select->num_rows === 0;
+        $date = new \DateTime('Europe/Moscow');
+        $formated_date = $date->format('Y-m-d H:i:s');
+
+        $query_manipulation = $is_rowEmpty
+          ? "INSERT INTO weather (city, created_at, updated_at, user_id) VALUES ('{$location}', '{$formated_date}', '${formated_date}', {$id})"
+          : "UPDATE weather SET city = '{$location}', updated_at = '{$formated_date}' WHERE user_id = {$id}";
+        self::$connect->query($query_manipulation);
       }
+    return "Вы подписаны. Теперь каждое утро вы будете получать уведомление о погоде в указанном городе.";
+    }
+    return "Не можем найти указанный вами город.";
+  }
+
+  public function unregister_weather_reciept($user_id) {
+    $user = new User();
+    $id = $user->get_user_id($user_id);
+    if (isset($id)) {
+      $query = "DELETE FROM weather WHERE user_id = {$id}";
+      self::$connect->query($query);
+      return "Вы отписались от уведомлений о погоде";
     }
   }
 }

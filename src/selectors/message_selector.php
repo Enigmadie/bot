@@ -4,16 +4,15 @@ namespace Bot\Selectors\Message_Selector;
 
 use Bot\User;
 use Bot\Weather;
-use function Bot\Services\Weather\get_weather;
 use function Bot\Api\vk_api_msgSend;
 use function Bot\Utils\format_city_name;
 use function Bot\Utils\mb_lcfirst;
 
 function msg_selector($msg, $chat_id) {
   $user = new User();
-  $has_userSignatures = $user->hasUser($chat_id);
+  $userId = $user->get_user_id($chat_id);
 
-  if (!$has_userSignatures) {
+  if ($userId === null) {
     $user->register($chat_id);
   }
 
@@ -22,13 +21,17 @@ function msg_selector($msg, $chat_id) {
       $words = explode(' ', $msg);
       array_shift($words);
       $isSubscribe = $words[0] === 'подписаться';
+      $isUnsubscribe = $words[0] === 'отписаться';
       $weather = new Weather();
 
-      if ($isSubscribe) {
+      if ($isSubscribe || $isUnsubscribe) {
         array_shift($words);
         $reg_location = implode(' ', $words);
         $formated_location = format_city_name(mb_lcfirst($reg_location));
-        $weather->register_weather_reciept($formated_location, $chat_id);
+        $sub_message = $isSubscribe
+          ? $weather->register_weather_reciept($formated_location, $chat_id)
+          : $weather->unregister_weather_reciept($chat_id);
+        vk_api_msgSend($chat_id, $sub_message);
         break;
       }
 

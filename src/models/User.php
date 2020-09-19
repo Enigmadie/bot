@@ -27,10 +27,10 @@ class User {
     self::$connect->query($query);
   }
 
-  public function hasUser($id) {
+  public function get_user_id($id) {
     $query = "SELECT * FROM user WHERE user_id = {$id}";
     $result = self::$connect->query($query);
-    return $result->num_rows > 0;
+    return $result->num_rows > 0 ? $result->fetch_assoc()['id'] : null;
   }
 }
 
