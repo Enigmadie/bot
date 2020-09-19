@@ -27,7 +27,8 @@ function callback_handleEvent() {
       callback_okResponse();
       break;
     default:
-      callback_response('Unsupported event');
+      callback_okResponse();
+      /* callback_response('Unsupported event'); */
       break;
   }
   callback_okResponse();

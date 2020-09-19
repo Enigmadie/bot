@@ -82,8 +82,5 @@ function get_locationKey($region) {
   }
   curl_close($curl);
   $response = json_decode($json, true);
-  if (!$response) {
-    throw new \Exception("Invalid response for {$region} request");
-  }
   return $response[0]['Key'] ?? null;
 }
