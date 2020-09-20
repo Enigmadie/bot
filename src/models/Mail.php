@@ -2,6 +2,8 @@
 
 namespace Bot;
 
+use function Bot\Services\mail\get_mail_data;
+
 class Mail {
   private static $connect;
 
@@ -32,9 +34,10 @@ class Mail {
     $result_select = self::$connect->query($query_select);
     $is_rowEmpty = $result_select->num_rows === 0;
 
+    $data = get_mail_data($track);
     /* $query_manipulation = $is_rowEmpty */
     /*   ? "INSERT INTO */ 
-
+    return $data['message'];
 
   }
 }

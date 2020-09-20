@@ -35,7 +35,6 @@ function msg_selector($msg, $chat_id) {
         vk_api_msgSend($chat_id, $sub_message);
         break;
       }
-          /* error_log(print_r(self::$connect->error, true)); */
       $city = implode(' ', $words);
       $formated_city = format_city_name(mb_lcfirst($city));
       $weather_msg = $weather->get_weather($formated_city);
@@ -45,7 +44,8 @@ function msg_selector($msg, $chat_id) {
       $words = explode(' ', $msg);
       array_shift($words);
       $mail = new Mail();
-      $mail->register_mail_track($words[0], $chat_id);
+      $message = $mail->register_mail_track($words[0], $chat_id);
+      vk_api_msgSend($chat_id, $message);
       break;
     case 'помощь':
       vk_api_msgSend($chat_id, "Доступные команды:\n Погода (город)");

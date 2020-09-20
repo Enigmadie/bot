@@ -47,8 +47,8 @@ class Weather {
 
       $date = date_create($time);
       $formated_date = date_format($date, 'H:m');
-     return "{$formated_date} {$weather} {$temperature['Value']}°C Ветер: {$wind['Speed']['Value']}км/ч";
-    }, $data);
+   return "&#8986;{$formated_date}\n &#9728;{$weather}\n&#127777;{$temperature['Value']}°C\n&#127788;{$wind['Speed']['Value']}км/ч";
+  }, $data);
 
     $city = mb_ucfirst($region);
 

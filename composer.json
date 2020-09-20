@@ -5,7 +5,8 @@
     "require": {
     },
     "scripts": {
-        "dump": "composer dump-autoload"
+        "dump": "composer dump-autoload",
+        "start": "php -S localhost:3000"
     },
     "autoload": {
         "psr-4": {"Bot\\": "src/models"},
@@ -13,6 +14,7 @@
             "src/utils/index.php",
             "src/selectors/message_selector.php",
             "src/services/weather.php",
+            "src/services/mail.php",
             "src/api/index.php",
             "./db_init.php"
         ]
