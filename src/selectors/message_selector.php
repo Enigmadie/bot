@@ -4,6 +4,7 @@ namespace Bot\Selectors\Message_Selector;
 
 use Bot\User;
 use Bot\Weather;
+use Bot\Mail;
 use function Bot\Api\vk_api_msgSend;
 use function Bot\Utils\format_city_name;
 use function Bot\Utils\mb_lcfirst;
@@ -34,12 +35,17 @@ function msg_selector($msg, $chat_id) {
         vk_api_msgSend($chat_id, $sub_message);
         break;
       }
-
           /* error_log(print_r(self::$connect->error, true)); */
       $city = implode(' ', $words);
       $formated_city = format_city_name(mb_lcfirst($city));
       $weather_msg = $weather->get_weather($formated_city);
       vk_api_msgSend($chat_id, $weather_msg);
+      break;
+    case (preg_match('/почта\s/', $msg) ? true : false):
+      $words = explode(' ', $msg);
+      array_shift($words);
+      $mail = new Mail();
+      $mail->register_mail_track($words[0], $chat_id);
       break;
     case 'помощь':
       vk_api_msgSend($chat_id, "Доступные команды:\n Погода (город)");

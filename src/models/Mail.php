@@ -12,9 +12,11 @@ class Mail {
 
     if (empty($result)) {
       $query = "CREATE TABLE mail (
-        id int(11) AUTO_INCREMENT PRIMARY KEY,
+        id INT(11) AUTO_INCREMENT PRIMARY KEY,
         mail_number INT(30),
-        created_at DATE,
+        status TEXT,
+        created_at DATETIME,
+        updated_at DATETIME,
         user_id INT(11),
         FOREIGN KEY (user_id) REFERENCES user (id)
         )";
@@ -23,5 +25,16 @@ class Mail {
         die("Model Mail is failed: " . self::$connect->error);
       }
     }
+  }
+
+  public function register_mail_track($track, $id) {
+    $query_select = "SELECT * FROM mail WHERE mail_number = {$track} AND user_id = {$id}";
+    $result_select = self::$connect->query($query_select);
+    $is_rowEmpty = $result_select->num_rows === 0;
+
+    /* $query_manipulation = $is_rowEmpty */
+    /*   ? "INSERT INTO */ 
+
+
   }
 }
