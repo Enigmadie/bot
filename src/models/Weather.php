@@ -88,5 +88,17 @@ class Weather {
       return "Вы отписались от уведомлений о погоде";
     }
   }
+
+  public function handle_weather_units() {
+    $query = "SELECT * FROM weather";
+    $result = self::$connect->query($query);
+
+    $weather_units = $result->fetch_assoc();
+    /* print_r($result->fetch_assoc()); */
+    $is_rowEmpty = $result->num_rows === 0;
+    if (!$is_rowEmpty) {
+      array_map(fn($el) => $this->get_weather($el), $weather_units);
+    }
+  }
 }
 

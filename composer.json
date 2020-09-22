@@ -16,7 +16,8 @@
             "src/services/weather.php",
             "src/services/mail.php",
             "src/api/index.php",
-            "./db_init.php"
+            "./db_init.php",
+            "cron/weather_run.script.php"
         ]
     }
 }
