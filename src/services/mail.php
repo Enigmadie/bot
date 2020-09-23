@@ -3,7 +3,8 @@
 namespace Bot\Services\mail;
 
 function get_mail_data($track) {
-  include '.env.php';
+  $mail_login = getenv('MAIL_LOGIN');
+  $mail_password = getenv('MAIL_PASSWORD');
 
   $request = "<?xml version='1.0' encoding='UTF-8'?>
                   <soap:Envelope xmlns:soap='http://www.w3.org/2003/05/soap-envelope' xmlns:oper='http://russianpost.org/operationhistory' xmlns:data='http://russianpost.org/operationhistory/data' xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/'>
@@ -16,8 +17,8 @@ function get_mail_data($track) {
                            <data:Language>RUS</data:Language>
                         </data:OperationHistoryRequest>
                         <data:AuthorizationHeader soapenv:mustUnderstand='1'>
-                           <data:login>{$MAIL_LOGIN}</data:login>
-                           <data:password>{$MAIL_PASSWORD}</data:password>
+                           <data:login>{$mail_login}</data:login>
+                           <data:password>{$mail_password}</data:password>
                         </data:AuthorizationHeader>
                      </oper:getOperationHistory>
                   </soap:Body>

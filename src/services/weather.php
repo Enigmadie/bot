@@ -3,9 +3,8 @@
 namespace Bot\Services\Weather;
 use function Bot\Utils\mb_ucfirst;
 
-include '.env.php';
 define('WEATHER_API_HOST', 'http://dataservice.accuweather.com/');
-define('WEATHER_API_TOKEN', $WEATHER_TOKEN);
+define('WEATHER_API_TOKEN', getenv('WEATHER_TOKEN'));
 
 function get_weather($region) {
   $data = get_forecasts($region);

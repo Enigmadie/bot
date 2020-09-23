@@ -3,5 +3,6 @@
 *.swp
 *.cache
 .env.php
+.env
 build
 composer.lock

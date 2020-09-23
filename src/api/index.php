@@ -1,9 +1,8 @@
 <?php
 
 namespace Bot\Api;
-include '.env.php';
 
-define('VK_API_TOKEN', $TOKEN);
+define('VK_API_TOKEN', getenv('TOKEN'));
 define('VK_API_VERSION', '5.103');
 define('VK_API_ENDPOINT', 'https://api.vk.com/method/');
 

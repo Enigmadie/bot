@@ -5,6 +5,8 @@ namespace Bot\Routes;
 use function Bot\Utils\mb_lcfirst;
 use function Bot\Selectors\Message_Selector\msg_selector;
 
+define('CONF_TOKEN', getenv('CONF_TOKEN'));
+
 if (!isset($_REQUEST)) {
   exit;
 }
@@ -12,11 +14,10 @@ if (!isset($_REQUEST)) {
 callback_handleEvent();
 
 function callback_handleEvent() {
-  include '.env.php';
   $data = json_decode(file_get_contents('php://input'));
   switch ($data->type) {
     case 'confirmation':
-      callback_response($CONF_TOKEN);
+      callback_response(CONF_TOKEN);
       break;
     case 'message_new':
       $message_text = $data->object->message->text;
