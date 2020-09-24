@@ -2,12 +2,11 @@
 
 namespace Bot\Api;
 
-define('VK_API_TOKEN', getenv('TOKEN'));
 define('VK_API_VERSION', '5.103');
 define('VK_API_ENDPOINT', 'https://api.vk.com/method/');
 
 function vk_api_call($method, $params = array()) {
-  $params['access_token'] = VK_API_TOKEN;
+  $params['access_token'] = $_ENV['TOKEN'];
   $params['v'] = VK_API_VERSION;
   $query = http_build_query($params);
   $url = VK_API_ENDPOINT . $method . '?' . $query;

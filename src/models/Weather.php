@@ -97,7 +97,7 @@ class Weather {
     /* print_r($result->fetch_assoc()); */
     $is_rowEmpty = $result->num_rows === 0;
     if (!$is_rowEmpty) {
-      array_map(fn($el) => $this->get_weather($el), $weather_units);
+      /* array_map(fn($el) => $this->get_weather($el), $weather_units); */
     }
   }
 }

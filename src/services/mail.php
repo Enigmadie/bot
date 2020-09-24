@@ -3,8 +3,8 @@
 namespace Bot\Services\mail;
 
 function get_mail_data($track) {
-  $mail_login = getenv('MAIL_LOGIN');
-  $mail_password = getenv('MAIL_PASSWORD');
+  $mail_login = $_ENV['MAIL_LOGIN'];
+  $mail_password = $_ENV['MAIL_PASSWORD'];
 
   $request = "<?xml version='1.0' encoding='UTF-8'?>
                   <soap:Envelope xmlns:soap='http://www.w3.org/2003/05/soap-envelope' xmlns:oper='http://russianpost.org/operationhistory' xmlns:data='http://russianpost.org/operationhistory/data' xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/'>
@@ -33,9 +33,7 @@ function get_mail_data($track) {
   $body = $xml->xpath('//SBody')[0];
   $array = json_decode(json_encode((array)$body), TRUE);
 
-  /* error_log(print_r($array), true); */
   $data = parse_mail_data($array);
-
   return $data;
 }
 

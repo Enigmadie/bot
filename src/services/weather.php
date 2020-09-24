@@ -1,34 +1,8 @@
 <?php
 
 namespace Bot\Services\Weather;
-use function Bot\Utils\mb_ucfirst;
 
 define('WEATHER_API_HOST', 'http://dataservice.accuweather.com/');
-define('WEATHER_API_TOKEN', getenv('WEATHER_TOKEN'));
-
-function get_weather($region) {
-  $data = get_forecasts($region);
-  if (!isset($data)) {
-    return 'Не найден';
-  }
-  $msg = array_map(function($el) {
-    [
-      'DateTime' => $time,
-      'IconPhrase' => $weather,
-      'Temperature' => $temperature,
-      'Wind' => $wind,
-    ] = $el;
-
-    $date = date_create($time);
-    $formated_date = date_format($date, 'H:m');
-   return "&#8986;{$formated_date}\n &#9728;{$weather}\n&#127777;{$temperature['Value']}°C\n &#127788{$wind['Speed']['Value']}км/ч";
-  }, $data);
-
-  $city = mb_ucfirst($region);
-
-  $msgString = implode("\n\n", $msg);
-  return "Погода в городе {$city}:\n\n" . $msgString;
-};
 
 function get_forecasts($region) {
   $key = get_locationKey($region);
@@ -36,7 +10,7 @@ function get_forecasts($region) {
     return null;
   }
   $params = array(
-    'apikey' => WEATHER_API_TOKEN,
+    'apikey' => $_ENV['WEATHER_TOKEN'],
     'language' => 'ru-ru',
     'details' => 'true',
     'metric' => 'true',
@@ -64,7 +38,7 @@ function get_forecasts($region) {
 
 function get_locationKey($region) {
   $params = array(
-    'apikey' => WEATHER_API_TOKEN,
+    'apikey' => $_ENV['WEATHER_TOKEN'],
     'q' => $region,
     'language' => 'ru-ru',
   );

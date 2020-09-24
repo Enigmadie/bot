@@ -15,6 +15,7 @@
         "files": [
             "src/utils/index.php",
             "src/selectors/message_selector.php",
+            "src/selectors/cron_selector.php",
             "src/services/weather.php",
             "src/services/mail.php",
             "src/api/index.php",
