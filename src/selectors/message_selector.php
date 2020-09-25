@@ -44,8 +44,8 @@ function msg_selector($msg, $chat_id) {
       $words = explode(' ', $msg);
       array_shift($words);
       $mail = new Mail();
-      $message = $mail->register_mail_track($words[0], $chat_id);
-      vk_api_msgSend($chat_id, $message);
+      $data = $mail->register_mail_track($words[0], $chat_id);
+      vk_api_msgSend($chat_id, $data['message']);
       break;
     case 'помощь':
       vk_api_msgSend($chat_id, "Доступные команды:\n Погода (город)");

@@ -30,6 +30,7 @@ function callback_handleEvent() {
       $action = $data->object->action;
       cron_selector($action);
       callback_okResponse();
+      break;
     default:
       callback_okResponse();
       /* callback_response('Unsupported event'); */

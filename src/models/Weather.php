@@ -60,7 +60,7 @@ class Weather {
     $key = get_locationKey($location);
     if (isset($key)) {
       $user = new User();
-      $id = $user->get_user_id($user_id);
+      $id = $user->get_id($user_id);
       if (isset($id)) {
         $query_select = "SELECT * FROM weather WHERE user_id = {$id}";
         $result_select = self::$connect->query($query_select);
@@ -81,7 +81,7 @@ class Weather {
 
   public function unregister_weather_reciept($user_id) {
     $user = new User();
-    $id = $user->get_user_id($user_id);
+    $id = $user->get_id($user_id);
     if (isset($id)) {
       $query = "DELETE FROM weather WHERE user_id = {$id}";
       self::$connect->query($query);

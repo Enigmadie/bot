@@ -3,6 +3,7 @@
 namespace Bot\Selectors\Cron_Selector;
 use Bot\Weather;
 use Bot\mail;
+use function Bot\Api\vk_api_msgSend;
 
 function cron_selector($action) {
   switch ($action) {
@@ -13,7 +14,12 @@ function cron_selector($action) {
       break;
     case 'mail':
       $mail = new Mail();
-      /* $mail->handle_weather_units(); */
+      $units = $mail->handle_mail_units();
+      if (isset($units)) {
+        foreach($units as $unit) {
+          vk_api_msgSend($unit['user_id'], $unit['message']);
+        }
+      }
     default:
       break;
   }

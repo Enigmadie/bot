@@ -33,7 +33,7 @@ class Mail {
 
   public function register_mail_track($track, $user_id) {
     $user = new User();
-    $id = $user->get_user_id($user_id);
+    $id = $user->get_id($user_id);
     if (isset($id)) {
       $query_select = "SELECT * FROM mail WHERE mail_number = {$track} AND user_id = {$id}";
       $result_select = self::$connect->query($query_select);
@@ -48,9 +48,7 @@ class Mail {
       if ($is_rowEmpty) {
         $query_insert = "INSERT INTO mail (mail_number, status, created_at, updated_at, user_id) VALUES ({$track}, '{$status}', '{$formated_date}', '{$formated_date}', {$id})";
         self::$connect->query($query_insert);
-        error_log(print_r(self::$connect->error), true);
       } else {
-        error_log(print_r($result_select->fetch_assoc()));
         $mail_status = $result_select->fetch_assoc()['status'];
         $has_rewrite_row = $mail_status !== $status;
         if ($has_rewrite_row) {
@@ -58,7 +56,32 @@ class Mail {
           self::$connect->query($query_update);
         }
       }
-      return $message;
+      return $data;
+    }
+  }
+
+  public function handle_mail_units() {
+    $query = "SELECT * FROM mail";
+    $result = self::$connect->query($query);
+    $is_rowEmpty = $result->num_rows === 0;
+    if (!$is_rowEmpty) {
+      $mail_units = [$result->fetch_assoc()];
+      $units = [];
+
+      foreach($mail_units as $el) {
+        $user = new User();
+        $user_id = $user->get_user_id($el['id']);
+        $data = $this->register_mail_track($el['mail_number'], $user_id);
+
+        if ($el['status'] !== $data['status']) {
+          array_push($units, [
+            'user_id' => $user_id,
+            'message' => $data['message']
+          ]);
+        }
+      }
+
+      return count($units) > 0 ? $units : null;
     }
   }
 }
