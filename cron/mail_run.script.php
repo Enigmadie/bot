@@ -1,4 +1,4 @@
-<?php
+<?php #!/usr/local/bin/php
 
 define('SERVER_ENDPOINT', 'https://bot.godos.ru');
 

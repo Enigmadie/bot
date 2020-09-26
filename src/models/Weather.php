@@ -35,7 +35,7 @@ class Weather {
   public function get_weather($region) {
     $data = get_forecasts($region);
     if (!isset($data)) {
-      return 'Не найден';
+      return null;
     }
     $msg = array_map(function($el) {
       [
@@ -92,12 +92,25 @@ class Weather {
   public function handle_weather_units() {
     $query = "SELECT * FROM weather";
     $result = self::$connect->query($query);
-
-    $weather_units = $result->fetch_assoc();
-    /* print_r($result->fetch_assoc()); */
     $is_rowEmpty = $result->num_rows === 0;
+
     if (!$is_rowEmpty) {
-      /* array_map(fn($el) => $this->get_weather($el), $weather_units); */
+      $weather_units = [$result->fetch_assoc()];
+      $units = [];
+      foreach($weather_units as $el) {
+        $message = $this->get_weather($el['city']);
+
+        if (isset($message)) {
+          $user = new User();
+          $user_id = $user->get_user_id($el['user_id']);
+          array_push($units, [
+            'user_id' => $user_id,
+            'message' => $message
+          ]);
+        }
+
+      }
+      return count($units) > 0 ? $units : null;
     }
   }
 }

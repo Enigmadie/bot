@@ -9,8 +9,12 @@ function cron_selector($action) {
   switch ($action) {
     case 'weather':
       $weather = new Weather();
-      $weather->handle_weather_units();
-      /* vk_api_msgSend($chat_id, $sub_message); */
+      $units = $weather->handle_weather_units();
+      if (isset($units)) {
+        foreach($units as $unit) {
+          vk_api_msgSend($unit['user_id'], $unit['message']);
+        }
+      }
       break;
     case 'mail':
       $mail = new Mail();
@@ -20,6 +24,7 @@ function cron_selector($action) {
           vk_api_msgSend($unit['user_id'], $unit['message']);
         }
       }
+      break;
     default:
       break;
   }

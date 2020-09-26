@@ -40,7 +40,7 @@ class Mail {
 
       $is_rowEmpty = $result_select->num_rows === 0;
       $data = get_mail_data($track);
-      ['status' => $status, 'message' => $message] = $data;
+      ['status' => $status] = $data;
 
       $date = new \DateTime('Europe/Moscow');
       $formated_date = $date->format('Y-m-d H:i:s');
@@ -64,13 +64,14 @@ class Mail {
     $query = "SELECT * FROM mail";
     $result = self::$connect->query($query);
     $is_rowEmpty = $result->num_rows === 0;
+
     if (!$is_rowEmpty) {
       $mail_units = [$result->fetch_assoc()];
       $units = [];
 
       foreach($mail_units as $el) {
         $user = new User();
-        $user_id = $user->get_user_id($el['id']);
+        $user_id = $user->get_user_id($el['user_id']);
         $data = $this->register_mail_track($el['mail_number'], $user_id);
 
         if ($el['status'] !== $data['status']) {

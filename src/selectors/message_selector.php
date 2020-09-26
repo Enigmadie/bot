@@ -13,11 +13,12 @@ function msg_selector($msg, $chat_id) {
   $user = new User();
   $userId = $user->get_user_id($chat_id);
 
-  if ($userId === null) {
+  if (!isset($userId)) {
     $user->register($chat_id);
   }
 
   switch($msg) {
+
     case (preg_match('/погода\s/', $msg) ? true : false):
       $words = explode(' ', $msg);
       array_shift($words);
@@ -35,11 +36,15 @@ function msg_selector($msg, $chat_id) {
         vk_api_msgSend($chat_id, $sub_message);
         break;
       }
+
       $city = implode(' ', $words);
       $formated_city = format_city_name(mb_lcfirst($city));
       $weather_msg = $weather->get_weather($formated_city);
-      vk_api_msgSend($chat_id, $weather_msg);
+      if (isset($weather_msg)) {
+        vk_api_msgSend($chat_id, $weather_msg);
+      }
       break;
+
     case (preg_match('/почта\s/', $msg) ? true : false):
       $words = explode(' ', $msg);
       array_shift($words);
@@ -47,8 +52,13 @@ function msg_selector($msg, $chat_id) {
       $data = $mail->register_mail_track($words[0], $chat_id);
       vk_api_msgSend($chat_id, $data['message']);
       break;
-    case 'помощь':
-      vk_api_msgSend($chat_id, "Доступные команды:\n Погода (город)");
+
+    case 'команды':
+      vk_api_msgSend($chat_id, "Доступные команды:
+        \n Погода (город)
+        \n Погода подписаться (город)
+        \n Погода отписаться
+        \n Почта (трек-номер)");
       break;
     default:
       break;
