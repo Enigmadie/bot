@@ -28,15 +28,23 @@ class User {
   }
 
   public function get_id($user_id) {
-    $query = "SELECT * FROM user WHERE user_id = {$user_id}";
-    $result = self::$connect->query($query);
+    $result = $this->select_values(['user_id' => $user_id]);
     return $result->num_rows > 0 ? $result->fetch_assoc()['id'] : null;
   }
 
   public function get_user_id($id) {
-    $query = "SELECT * FROM user WHERE id = {$id}";
-    $result = self::$connect->query($query);
+    $result = $this->select_values(['id' => $id]);
     return $result->num_rows > 0 ? $result->fetch_assoc()['user_id'] : null;
+  }
+
+  private function select_values($where = null) {
+    $query = "SELECT * FROM user";
+    if (isset($where)) {
+      $query .= ' WHERE ' . http_build_query($where, '', ' AND ');
+    }
+
+    $result = self::$connect->query($query);
+    return $result;
   }
 }
 
