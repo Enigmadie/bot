@@ -24,3 +24,7 @@ function format_city_name($city) {
       return $city;
     }
 }
+
+/* function get_weather_icon($weather) { */
+
+/* } */

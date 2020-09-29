@@ -28,13 +28,13 @@ class User {
   }
 
   public function get_id($user_id) {
-    $query = "SELECT id FROM user WHERE user_id = {$user_id}";
+    $query = "SELECT * FROM user WHERE user_id = {$user_id}";
     $result = self::$connect->query($query);
     return $result->num_rows > 0 ? $result->fetch_assoc()['id'] : null;
   }
 
   public function get_user_id($id) {
-    $query = "SELECT user_id FROM user WHERE id = {$id}";
+    $query = "SELECT * FROM user WHERE id = {$id}";
     $result = self::$connect->query($query);
     return $result->num_rows > 0 ? $result->fetch_assoc()['user_id'] : null;
   }

@@ -37,8 +37,7 @@ class Mail {
       $user = new User();
       $id = $user->get_id($user_id);
       if (isset($id)) {
-        $query_select = "SELECT * FROM mail WHERE mail_number = {$track} AND user_id = {$id}";
-        $result_select = self::$connect->query($query_select);
+        $result_select = $this->select_values(['mail_number' => $track, 'user_id' => $id]);
 
         $is_rowEmpty = $result_select->num_rows === 0;
         ['status' => $status] = $data;
@@ -63,8 +62,7 @@ class Mail {
   }
 
   public function handle_mail_units() {
-    $query = "SELECT * FROM mail";
-    $result = self::$connect->query($query);
+    $result = $this->select_values();
     $is_rowEmpty = $result->num_rows === 0;
 
     if (!$is_rowEmpty) {
@@ -86,5 +84,15 @@ class Mail {
 
       return count($units) > 0 ? $units : null;
     }
+  }
+
+  private function select_values($where = null) {
+    $query = "SELECT * FROM mail";
+    if (isset($where)) {
+      $query .= ' WHERE ' . http_build_query($where, '', ' AND ');
+    }
+
+    $result = self::$connect->query($query);
+    return $result;
   }
 }
