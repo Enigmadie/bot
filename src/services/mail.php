@@ -38,25 +38,34 @@ function get_mail_data($track) {
 }
 
 function parse_mail_data($data) {
-  $historyData = $data['ns7getOperationHistoryResponse']['ns3OperationHistoryData']['ns3historyRecord'];
-  $lastAction = $historyData[count($historyData) - 1];
+  $is_emptyData = empty($data['ns7getOperationHistoryResponse']['ns3OperationHistoryData']);
+  $is_errorData = array_key_exists('SFault', $data);
 
-  [
-    'ns3OperationParameters' => $operation,
-    'ns3AddressParameters' => $address,
-  ] = $lastAction;
+  if (!$is_emptyData && !$is_errorData) {
+    $historyData = $data['ns7getOperationHistoryResponse']['ns3OperationHistoryData']['ns3historyRecord'];
+    $lastAction = $historyData[count($historyData) - 1];
 
-  $status = $operation['ns3OperAttr']['ns3Name'];
-  $date = new \Datetime($operation['ns3OperDate']);
+    [
+      'ns3OperationParameters' => $operation,
+      'ns3AddressParameters' => $address,
+    ] = $lastAction;
 
-  $formatedDate = $date->format('d-m-Y H:i');
+    $status = $operation['ns3OperAttr']['ns3Name'];
+    $date = new \Datetime($operation['ns3OperDate']);
 
-  $index = $address['ns3OperationAddress']['ns3Index'];
-  $location = $address['ns3OperationAddress']['ns3Description'];
+    $formatedDate = $date->format('d-m-Y H:i');
 
+    $index = $address['ns3OperationAddress']['ns3Index'];
+    $location = $address['ns3OperationAddress']['ns3Description'];
+
+    return [
+      'status' => $status,
+      'message' => "&#9889;{$status}\n\n&#128197;{$formatedDate}\n&#128234; {$index}\n&#9654;${location}",
+    ];
+  }
   return [
-    'status' => $status,
-    'message' => "&#9889;{$status}\n\n&#128197;{$formatedDate}\n&#128234; {$index}\n&#9654;${location}",
+    'status' => null,
+    'message' => 'Почта не найдена &#128373;',
   ];
 }
 

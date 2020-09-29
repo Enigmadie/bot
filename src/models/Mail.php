@@ -32,32 +32,34 @@ class Mail {
   }
 
   public function register_mail_track($track, $user_id) {
-    $user = new User();
-    $id = $user->get_id($user_id);
-    if (isset($id)) {
-      $query_select = "SELECT * FROM mail WHERE mail_number = {$track} AND user_id = {$id}";
-      $result_select = self::$connect->query($query_select);
+    $data = get_mail_data($track);
+    if (isset($data['status'])) {
+      $user = new User();
+      $id = $user->get_id($user_id);
+      if (isset($id)) {
+        $query_select = "SELECT * FROM mail WHERE mail_number = {$track} AND user_id = {$id}";
+        $result_select = self::$connect->query($query_select);
 
-      $is_rowEmpty = $result_select->num_rows === 0;
-      $data = get_mail_data($track);
-      ['status' => $status] = $data;
+        $is_rowEmpty = $result_select->num_rows === 0;
+        ['status' => $status] = $data;
 
-      $date = new \DateTime('Europe/Moscow');
-      $formated_date = $date->format('Y-m-d H:i:s');
+        $date = new \DateTime('Europe/Moscow');
+        $formated_date = $date->format('Y-m-d H:i:s');
 
-      if ($is_rowEmpty) {
-        $query_insert = "INSERT INTO mail (mail_number, status, created_at, updated_at, user_id) VALUES ({$track}, '{$status}', '{$formated_date}', '{$formated_date}', {$id})";
-        self::$connect->query($query_insert);
-      } else {
-        $mail_status = $result_select->fetch_assoc()['status'];
-        $has_rewrite_row = $mail_status !== $status;
-        if ($has_rewrite_row) {
-          $query_update = "UPDATE mail SET status = '{$status}', updated_at = '{$formated_date}' WHERE user_id = {$id}";
-          self::$connect->query($query_update);
+        if ($is_rowEmpty) {
+          $query_insert = "INSERT INTO mail (mail_number, status, created_at, updated_at, user_id) VALUES ({$track}, '{$status}', '{$formated_date}', '{$formated_date}', {$id})";
+          self::$connect->query($query_insert);
+        } else {
+          $mail_status = $result_select->fetch_assoc()['status'];
+          $has_rewrite_row = $mail_status !== $status;
+          if ($has_rewrite_row) {
+            $query_update = "UPDATE mail SET status = '{$status}', updated_at = '{$formated_date}' WHERE user_id = {$id}";
+            self::$connect->query($query_update);
+          }
         }
       }
-      return $data;
     }
+    return $data;
   }
 
   public function handle_mail_units() {

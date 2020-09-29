@@ -14,28 +14,27 @@ callback_handleEvent();
 
 function callback_handleEvent() {
   $data = json_decode(file_get_contents('php://input'));
-  switch ($data->type) {
-    case 'confirmation':
-      callback_response($_ENV['CONF_TOKEN']);
-      break;
-    case 'message_new':
-      $message_text = $data->object->message->text;
-      $chat_id = $data->object->message->from_id;
-      $formatedMsg = mb_lcfirst($message_text);
+    switch ($data->type) {
+      case 'confirmation':
+        callback_response($_ENV['CONF_TOKEN']);
+        break;
+      case 'message_new':
+        $message_text = $data->object->message->text;
+        $chat_id = $data->object->message->from_id;
+        $formatedMsg = mb_lcfirst($message_text);
 
-      msg_selector($formatedMsg, $chat_id);
-      callback_okResponse();
-      break;
-    case 'cron_script':
-      $action = $data->object->action;
-      cron_selector($action);
-      callback_okResponse();
-      break;
-    default:
-      callback_okResponse();
-      /* callback_response('Unsupported event'); */
-      break;
-  }
+        msg_selector($formatedMsg, $chat_id);
+        callback_okResponse();
+        break;
+      case 'cron_script':
+        $action = $data->object->action;
+        cron_selector($action);
+        /* callback_okResponse(); */
+        break;
+      default:
+        callback_response('Unsupported event');
+        break;
+    }
   callback_okResponse();
 }
 
