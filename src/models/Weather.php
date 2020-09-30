@@ -5,6 +5,7 @@ namespace Bot;
 use function Bot\Services\Weather\get_forecasts;
 use function Bot\Services\Weather\get_locationKey;
 use function Bot\Utils\mb_ucfirst;
+use function Bot\Utils\select_vk_icon;
 
 use Bot\User;
 
@@ -40,14 +41,16 @@ class Weather {
     $msg = array_map(function($el) {
       [
         'DateTime' => $time,
+        'WeatherIcon' => $icon,
         'IconPhrase' => $weather,
         'Temperature' => $temperature,
         'Wind' => $wind,
       ] = $el;
 
+      $Weather_icon = select_vk_icon((int)$icon);
       $date = date_create($time);
-      $formated_date = date_format($date, 'H:m');
-   return "&#8986;{$formated_date}\n &#9728;{$weather}\n&#127777;{$temperature['Value']}°C\n&#127788;{$wind['Speed']['Value']}км/ч";
+      $formated_date = date_format($date, 'H:i');
+   return "&#8986;{$formated_date}\n {$Weather_icon}{$weather}\n&#127777;{$temperature['Value']}°C\n&#127788;{$wind['Speed']['Value']}км/ч";
   }, $data);
 
     $city = mb_ucfirst($region);
