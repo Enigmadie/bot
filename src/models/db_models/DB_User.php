@@ -2,7 +2,7 @@
 
 namespace Bot;
 
-class User {
+class DB_User {
   private static $connect;
 
   public static function up($connect) {
@@ -22,26 +22,26 @@ class User {
       }
   }
 
-  public function register($id) {
-    $query = "INSERT INTO user (user_id) VALUES (${id})";
-    self::$connect->query($query);
-  }
-
-  public function get_id($user_id) {
-    $result = $this->select_values(['user_id' => $user_id]);
-    return $result->num_rows > 0 ? $result->fetch_assoc()['id'] : null;
-  }
-
-  public function get_user_id($id) {
-    $result = $this->select_values(['id' => $id]);
-    return $result->num_rows > 0 ? $result->fetch_assoc()['user_id'] : null;
-  }
-
-  private function select_values($where = null) {
+  public static function select_values($where = null) {
     $query = "SELECT * FROM user";
     if (isset($where)) {
       $query .= ' WHERE ' . http_build_query($where, '', ' AND ');
     }
+
+    $result = self::$connect->query($query);
+    return $result;
+  }
+
+  public static function insert_values($coll) {
+    $query = "INSERT INTO user";
+
+    $keys = array_keys($coll);
+    $values = array_values($coll);
+
+    $namesString = implode(', ', $keys);
+    $rowValues = array_map(fn($el) => is_string($el) ? "'{$el}'" : $el, $values);
+    $valuesString = implode(', ', $rowValues);
+    $query .= " ({$namesString}) VALUES ({$valuesString})";
 
     $result = self::$connect->query($query);
     return $result;

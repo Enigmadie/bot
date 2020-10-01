@@ -3,33 +3,10 @@
 namespace Bot;
 
 use function Bot\Services\mail\get_mail_data;
-
-use Bot\User;
+use Bot\Db_Mail;
 
 class Mail {
   private static $connect;
-
-  public static function up($connect) {
-    self::$connect = $connect;
-    $query = "SELECT * FROM mail";
-    $result = self::$connect->query($query);
-
-    if (empty($result)) {
-      $query = "CREATE TABLE mail (
-        id INT(11) AUTO_INCREMENT PRIMARY KEY,
-        mail_number BIGINT(15),
-        status TEXT,
-        created_at DATETIME,
-        updated_at DATETIME,
-        user_id INT(11),
-        FOREIGN KEY (user_id) REFERENCES user (id)
-        )";
-      $result = self::$connect->query($query);
-      if (self::$connect->error) {
-        die("Model Mail is failed: " . self::$connect->error);
-      }
-    }
-  }
 
   public function register_mail_track($track, $user_id) {
     $data = get_mail_data($track);
@@ -37,7 +14,7 @@ class Mail {
       $user = new User();
       $id = $user->get_id($user_id);
       if (isset($id)) {
-        $result_select = $this->select_values(['mail_number' => $track, 'user_id' => $id]);
+        $result_select = DB_Mail::select_values(['mail_number' => $track, 'user_id' => $id]);
 
         $is_rowEmpty = $result_select->num_rows === 0;
         ['status' => $status] = $data;
@@ -84,15 +61,5 @@ class Mail {
 
       return count($units) > 0 ? $units : null;
     }
-  }
-
-  private function select_values($where = null) {
-    $query = "SELECT * FROM mail";
-    if (isset($where)) {
-      $query .= ' WHERE ' . http_build_query($where, '', ' AND ');
-    }
-
-    $result = self::$connect->query($query);
-    return $result;
   }
 }
