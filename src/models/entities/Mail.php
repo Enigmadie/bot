@@ -3,10 +3,10 @@
 namespace Bot;
 
 use function Bot\Services\mail\get_mail_data;
-use Bot\Db_Mail;
+use Bot\Db_actions;
 
 class Mail {
-  private static $connect;
+  private static $table = 'mail';
 
   public function register_mail_track($track, $user_id) {
     $data = get_mail_data($track);
@@ -14,7 +14,10 @@ class Mail {
       $user = new User();
       $id = $user->get_id($user_id);
       if (isset($id)) {
-        $result_select = DB_Mail::select_values(['mail_number' => $track, 'user_id' => $id]);
+        $result_select = DB_actions::select_values(
+          self::$table,
+          ['mail_number' => $track, 'user_id' => $id]
+        );
 
         $is_rowEmpty = $result_select->num_rows === 0;
         ['status' => $status] = $data;
@@ -23,14 +26,30 @@ class Mail {
         $formated_date = $date->format('Y-m-d H:i:s');
 
         if ($is_rowEmpty) {
-          $query_insert = "INSERT INTO mail (mail_number, status, created_at, updated_at, user_id) VALUES ({$track}, '{$status}', '{$formated_date}', '{$formated_date}', {$id})";
-          self::$connect->query($query_insert);
+          Db_actions::insert_values(
+            self::$table,
+            [
+              'mail_number' => $track,
+              'status' => $status,
+              'created_at' => $formated_date,
+              'updated_at' => $formated_date,
+              'user_id' => $id,
+            ],
+          );
         } else {
           $mail_status = $result_select->fetch_assoc()['status'];
           $has_rewrite_row = $mail_status !== $status;
           if ($has_rewrite_row) {
-            $query_update = "UPDATE mail SET status = '{$status}', updated_at = '{$formated_date}' WHERE user_id = {$id}";
-            self::$connect->query($query_update);
+            Db_actions::update_values(
+              self::$table,
+              [
+                'status' => $status,
+                'updated_at' => $formated_date,
+              ],
+              [
+                'user_id' => $id,
+              ]
+            );
           }
         }
       }
@@ -39,7 +58,7 @@ class Mail {
   }
 
   public function handle_mail_units() {
-    $result = $this->select_values();
+    $result = Db_actions::select_values(self::$table);
     $is_rowEmpty = $result->num_rows === 0;
 
     if (!$is_rowEmpty) {

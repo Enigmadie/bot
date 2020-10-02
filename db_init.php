@@ -1,10 +1,8 @@
 <?php
 
-namespace Bot\Db;
+namespace Bot\Db_init;
 
-use Bot\DB_User;
-use Bot\DB_Mail;
-use Bot\DB_Weather;
+use Bot\Db;
 
 function init_db() {
   define("DB_LOGIN", $_ENV['DB_LOGIN']);
@@ -18,7 +16,5 @@ function init_db() {
     die("Connection failed: " . $connect->connect_error);
   }
 
-  DB_User::up($connect);
-  DB_Mail::up($connect);
-  DB_Weather::up($connect);
+  Db::up($connect);
 }

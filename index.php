@@ -14,6 +14,6 @@ use Symfony\Component\Dotenv\Dotenv;
 $dotenv = new Dotenv();
 $dotenv->load(__DIR__.'/.env');
 
-Bot\Db\init_db();
+Bot\Db_init\init_db();
 
 require_once './src/index.php';

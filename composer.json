@@ -10,7 +10,7 @@
         "start": "php -S localhost:3000"
     },
     "autoload": {
-        "psr-4": {"Bot\\": "src/models"},
+        "psr-4": {"Bot\\": ["src/models", "src/models/entities"]},
         "files": [
             "src/utils/index.php",
             "src/selectors/message_selector.php",

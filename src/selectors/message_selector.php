@@ -11,14 +11,13 @@ use function Bot\Utils\mb_lcfirst;
 
 function msg_selector($msg, $chat_id) {
   $user = new User();
-  $userId = $user->get_user_id($chat_id);
+  $userId = $user->get_id($chat_id);
 
   if (!isset($userId)) {
     $user->register($chat_id);
   }
 
   switch($msg) {
-
     case (preg_match('/погода\s/', $msg) ? true : false):
       $words = explode(' ', $msg);
       array_shift($words);

@@ -7,12 +7,12 @@ use function Bot\Services\Weather\get_locationKey;
 use function Bot\Utils\mb_ucfirst;
 use function Bot\Utils\select_vk_icon;
 
-use Bot\DB_Weather;
+use Bot\Db_actions;
 
 use Bot\User;
 
 class Weather {
-  private static $connect;
+  private static $table = 'weather';
 
   public function get_weather($region) {
     $data = get_forecasts($region);
@@ -46,18 +46,34 @@ class Weather {
       $user = new User();
       $id = $user->get_id($user_id);
       if (isset($id)) {
-        $result_select = DB_Weather::select_values(['user_id' => $id]);
+        $result_select = DB_actions::select_values(self::$table, ['user_id' => $id]);
 
         $is_rowEmpty = $result_select->num_rows === 0;
         $date = new \DateTime('Europe/Moscow');
         $formated_date = $date->format('Y-m-d H:i:s');
 
-        $query_manipulation = $is_rowEmpty
-          ? "INSERT INTO weather (city, created_at, updated_at, user_id) VALUES ('{$location}', '{$formated_date}', '${formated_date}', {$id})"
-          : "UPDATE weather SET city = '{$location}', updated_at = '{$formated_date}' WHERE user_id = {$id}";
-        self::$connect->query($query_manipulation);
+        $is_rowEmpty
+          ? Db_actions::insert_values(
+            self::$table,
+            [
+              'city' => $location,
+              'created_at' => $formated_date,
+              'updated_at' => $formated_date,
+              'user_id' => $id,
+            ],
+          )
+          : Db_actions::update_values(
+              self::$table,
+              [
+                'location' => $location,
+                'updated_at' => $formated_date,
+              ],
+              [
+                'user_id' => $id,
+              ]
+            );
       }
-    return "Вы подписаны. Теперь каждое утро вы будете получать уведомление о погоде в указанном городе.";
+      return "Вы подписаны. Теперь каждое утро вы будете получать уведомление о погоде в указанном городе.";
     }
     return "Не можем найти указанный вами город.";
   }
@@ -66,14 +82,13 @@ class Weather {
     $user = new User();
     $id = $user->get_id($user_id);
     if (isset($id)) {
-      $query = "DELETE FROM weather WHERE user_id = {$id}";
-      self::$connect->query($query);
+      Db_actions::delete_values(self::$table, ['user_id' => $id]);
       return "Вы отписались от уведомлений о погоде";
     }
   }
 
   public function handle_weather_units() {
-    $result = $this->select_values();
+    $result = Db_actions::select_values(self::$table);
     $is_rowEmpty = $result->num_rows === 0;
 
     if (!$is_rowEmpty) {
