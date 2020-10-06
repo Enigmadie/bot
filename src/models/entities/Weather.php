@@ -8,6 +8,7 @@ use function Bot\Utils\mb_ucfirst;
 use function Bot\Utils\select_vk_icon;
 
 use Bot\Db_actions;
+use Bot\Db_results;
 
 use Bot\User;
 
@@ -48,7 +49,7 @@ class Weather {
       if (isset($id)) {
         $result_select = DB_actions::select_values(self::$table, ['user_id' => $id]);
 
-        $is_rowEmpty = $result_select->num_rows === 0;
+        $is_rowEmpty = Db_results::is_rowEmpty($result_select);
         $date = new \DateTime('Europe/Moscow');
         $formated_date = $date->format('Y-m-d H:i:s');
 
@@ -89,10 +90,10 @@ class Weather {
 
   public function handle_weather_units() {
     $result = Db_actions::select_values(self::$table);
-    $is_rowEmpty = $result->num_rows === 0;
+    $is_rowEmpty = Db_results::is_rowEmpty($result);
 
     if (!$is_rowEmpty) {
-      $weather_units = [$result->fetch_assoc()];
+      $weather_units = Db_results::get_rows($result);
       $units = [];
       foreach($weather_units as $el) {
         $message = $this->get_weather($el['city']);

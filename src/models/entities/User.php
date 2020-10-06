@@ -3,6 +3,7 @@
 namespace Bot;
 
 use Bot\Db_actions;
+use Bot\Db_results;
 
 class User {
   private static $table = 'user';
@@ -13,12 +14,16 @@ class User {
 
   public function get_id($user_id) {
     $result = Db_actions::select_values(self::$table, ['user_id' => $user_id]);
-    return $result->num_rows > 0 ? $result->fetch_assoc()['id'] : null;
+    $is_rowEmpty = Db_results::is_rowEmpty($result);
+
+    return !$is_rowEmpty ? Db_results::get_row_params($result, 'id') : null;
   }
 
   public function get_user_id($id) {
     $result = Db_actions::select_values(self::$table, ['id' => $id]);
-    return $result->num_rows > 0 ? $result->fetch_assoc()['user_id'] : null;
+    $is_rowEmpty = Db_results::is_rowEmpty($result);
+
+    return !$is_rowEmpty ? Db_results::get_row_params($result, 'user_id') : null;
   }
 }
 

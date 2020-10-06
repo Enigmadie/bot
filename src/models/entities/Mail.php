@@ -4,6 +4,7 @@ namespace Bot;
 
 use function Bot\Services\mail\get_mail_data;
 use Bot\Db_actions;
+use Bot\Db_results;
 
 class Mail {
   private static $table = 'mail';
@@ -14,12 +15,12 @@ class Mail {
       $user = new User();
       $id = $user->get_id($user_id);
       if (isset($id)) {
-        $result_select = DB_actions::select_values(
+        $result_select = Db_actions::select_values(
           self::$table,
           ['mail_number' => $track, 'user_id' => $id]
         );
 
-        $is_rowEmpty = $result_select->num_rows === 0;
+        $is_rowEmpty = Db_results::is_rowEmpty($result_select);
         ['status' => $status] = $data;
 
         $date = new \DateTime('Europe/Moscow');
@@ -37,7 +38,7 @@ class Mail {
             ],
           );
         } else {
-          $mail_status = $result_select->fetch_assoc()['status'];
+          $mail_status = Db_results::get_row_params($result_select, 'status');
           $has_rewrite_row = $mail_status !== $status;
           if ($has_rewrite_row) {
             Db_actions::update_values(
@@ -59,10 +60,10 @@ class Mail {
 
   public function handle_mail_units() {
     $result = Db_actions::select_values(self::$table);
-    $is_rowEmpty = $result->num_rows === 0;
+    $is_rowEmpty = Db_results::is_rowEmpty($result);
 
     if (!$is_rowEmpty) {
-      $mail_units = [$result->fetch_assoc()];
+      $mail_units = Db_results::get_rows($result);
       $units = [];
 
       foreach($mail_units as $el) {

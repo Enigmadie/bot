@@ -4,9 +4,9 @@ namespace Bot;
 
 class Db_actions extends Db {
   public static function select_values($table, $where = null) {
-    $query = "SELECT * FROM {$table} WHERE ";
+    $query = "SELECT * FROM {$table}";
     if (isset($where)) {
-      $query .= http_build_query($where, '', ' AND ');
+      $query .= " WHERE " . http_build_query($where, '', ' AND ');
     }
 
     $result = self::$connect->query($query);

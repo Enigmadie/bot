@@ -2,7 +2,7 @@
 
 namespace Bot\Selectors\Cron_Selector;
 use Bot\Weather;
-use Bot\mail;
+use Bot\Mail;
 use function Bot\Api\vk_api_msgSend;
 
 function cron_selector($action) {
