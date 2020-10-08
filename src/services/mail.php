@@ -43,24 +43,35 @@ function parse_mail_data($data) {
 
   if (!$is_emptyData && !$is_errorData) {
     $historyData = $data['ns7getOperationHistoryResponse']['ns3OperationHistoryData']['ns3historyRecord'];
-    $lastAction = $historyData[count($historyData) - 1];
+
+    function isAssoc(array $arr)
+    {
+        if (array() === $arr) return false;
+        return array_keys($arr) !== range(0, count($arr) - 1);
+    }
+
+    /* $historyData_items_count = count($historyData); */
+    $lastAction = !isAssoc($historyData)
+      ? $historyData[count($historyData) - 1]
+      : $historyData;
 
     [
       'ns3OperationParameters' => $operation,
       'ns3AddressParameters' => $address,
+      'ns3ItemParameters' => $item,
     ] = $lastAction;
 
-    $status = $operation['ns3OperAttr']['ns3Name'];
+    $status = $operation['ns3OperType']['ns3Name'];
     $date = new \Datetime($operation['ns3OperDate']);
 
     $formatedDate = $date->format('d-m-Y H:i');
 
-    $index = $address['ns3OperationAddress']['ns3Index'];
+    $index = $item['ns3Barcode'];
     $location = $address['ns3OperationAddress']['ns3Description'];
 
     return [
       'status' => $status,
-      'message' => "&#9889;{$status}\n\n&#128197;{$formatedDate}\n&#128234; {$index}\n&#9654;${location}",
+      'message' => "&#9993; ${index}\n\n&#9889;{$status}\n&#128197;{$formatedDate}\n&#9654;${location}",
     ];
   }
   return [

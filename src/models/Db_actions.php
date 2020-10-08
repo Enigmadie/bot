@@ -6,7 +6,12 @@ class Db_actions extends Db {
   public static function select_values($table, $where = null) {
     $query = "SELECT * FROM {$table}";
     if (isset($where)) {
-      $query .= " WHERE " . http_build_query($where, '', ' AND ');
+      $query_rest = [];
+      foreach($where as $key => $value) {
+        $modValue = is_string($value) ? "'{$value}'" : $value;
+        $query_rest[] = "${key} = ${modValue}";
+      }
+      $query .= " WHERE " . implode(' AND ', $query_rest);
     }
 
     $result = self::$connect->query($query);
@@ -47,7 +52,12 @@ class Db_actions extends Db {
 
   public static function delete_values($table, $where) {
     $query = "DELETE FROM ${table} WHERE ";
-    $query .= http_build_query($where, '', ' AND ');
+    $query_rest = [];
+    foreach($where as $key => $value) {
+      $modValue = is_string($value) ? "'{$value}'" : $value;
+      $query_rest[] = "${key} = ${modValue}";
+    }
+    $query .= " WHERE " . implode(' AND ', $query_rest);
 
     $result = self::$connect->query($query);
     if (self::$connect->error) {

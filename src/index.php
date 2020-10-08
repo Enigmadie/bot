@@ -23,7 +23,7 @@ function callback_handleEvent() {
         $chat_id = $data->object->message->from_id;
         $formatedMsg = mb_lcfirst($message_text);
 
-        msg_selector($formatedMsg, $chat_id);
+        msg_selector($formatedMsg, (int)$chat_id);
         callback_okResponse();
         break;
       case 'cron_script':

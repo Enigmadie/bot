@@ -16,7 +16,7 @@ class Db {
       self::$connect->query("
         CREATE TABLE mail (
           id INT(11) AUTO_INCREMENT PRIMARY KEY,
-          mail_number BIGINT(15),
+          mail_number VARCHAR(60) NOT NULL,
           status TEXT,
           created_at DATETIME,
           updated_at DATETIME,
