@@ -10,6 +10,12 @@ function mb_ucfirst($str) {
   return mb_strtoupper(mb_substr($str, 0, 1)) . mb_substr($str, 1);
 }
 
+function isAssoc(array $arr)
+{
+    if (array() === $arr) return false;
+    return array_keys($arr) !== range(0, count($arr) - 1);
+}
+
 function format_city_name($city) {
   switch($city) {
     case 'спб':

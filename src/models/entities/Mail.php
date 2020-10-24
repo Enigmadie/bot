@@ -20,8 +20,6 @@ class Mail {
           ['mail_number' => $track, 'user_id' => (int)$id]
         );
 
-        var_dump($result_select);
-
         $is_rowEmpty = Db_results::is_rowEmpty($result_select);
         ['status' => $status] = $data;
 

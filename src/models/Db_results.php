@@ -12,6 +12,9 @@ class Db_results {
   }
 
   public static function get_rows($result) {
-    return [$result->fetch_assoc()];
+    while($row = $result->fetch_assoc()) {
+         $json[] = $row;
+    }
+    return $json;
   }
 }

@@ -39,10 +39,19 @@ class Db_actions extends Db {
   public static function update_values($table, $coll, $where) {
     $query = "UPDATE {$table} SET ";
 
-    $rows = array_map(fn($el) => is_string($el) ? "'{$el}'" : $el, $coll);
+    $query_rows = [];
+    foreach($coll as $key => $value) {
+      $query_value = is_string($value)  ? "'{$value}'" : $value;
+      $query_rows[] = "${key} = ${query_value} ";
+    }
 
-    $query .= http_build_query($rows, '', ', ') .  'WHERE ' . http_build_query($where, '', ' AND ');
+    $query_rest = [];
+    foreach($where as $key => $value) {
+      $modValue = is_string($value) ? "'{$value}'" : $value;
+      $query_rest[] = "${key} = ${modValue}";
+    }
 
+    $query .= implode(', ', $query_rows) . 'WHERE ' .implode(' AND ', $query_rest);
     $result = self::$connect->query($query);
     if (self::$connect->error) {
       die("Opeatrion update is failed: " . self::$connect->error);

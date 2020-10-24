@@ -2,6 +2,8 @@
 
 namespace Bot\Services\mail;
 
+use function Bot\Utils\isAssoc;
+
 function get_mail_data($track) {
   $mail_login = $_ENV['MAIL_LOGIN'];
   $mail_password = $_ENV['MAIL_PASSWORD'];
@@ -44,13 +46,6 @@ function parse_mail_data($data) {
   if (!$is_emptyData && !$is_errorData) {
     $historyData = $data['ns7getOperationHistoryResponse']['ns3OperationHistoryData']['ns3historyRecord'];
 
-    function isAssoc(array $arr)
-    {
-        if (array() === $arr) return false;
-        return array_keys($arr) !== range(0, count($arr) - 1);
-    }
-
-    /* $historyData_items_count = count($historyData); */
     $lastAction = !isAssoc($historyData)
       ? $historyData[count($historyData) - 1]
       : $historyData;
