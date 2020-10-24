@@ -49,6 +49,7 @@ class Mail {
               ],
               [
                 'user_id' => $id,
+                'mail_number' => $track
               ]
             );
           }
