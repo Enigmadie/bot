@@ -32,7 +32,7 @@ class Weather {
       $Weather_icon = select_vk_icon((int)$icon);
       $date = date_create($time);
       $formated_date = date_format($date, 'H:i');
-   return "&#8986;{$formated_date}\n {$Weather_icon}{$weather}\n&#127777;{$temperature['Value']}°C\n&#127788;{$wind['Speed']['Value']}км/ч";
+   return "&#8986;{$formated_date}\n &#127777;{$temperature['Value']}°C\n{$Weather_icon}{$weather}\n&#127788;{$wind['Speed']['Value']}км/ч";
   }, $data);
 
     $city = mb_ucfirst($region);

@@ -81,7 +81,7 @@ function select_vk_icon($icon) {
     case 26:
     case 29:
     case 44:
-      return '&#127784'; //snow
+      return '&#127784;'; //snow
     case 24:
       return '&#10052;'; //ice
     case 30:
